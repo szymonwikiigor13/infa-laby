@@ -1,0 +1,42 @@
+﻿  laby2.c
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(25,23): warning C4047: '=': 'int' differs in levels of indirection from 'float *'
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(27,23): warning C4047: '=': 'float *' differs in levels of indirection from 'int'
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(53,22): warning C4554: '&': check operator precedence for possible error; use parentheses to clarify precedence
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(55,14): error C2059: syntax error: '|'
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(59,13): error C2059: syntax error: '|'
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(62,13): warning C4098: 'rozmiartablicy': 'void' function returning a value
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(70,19): error C2082: redefinition of formal parameter 'wyniki'
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(71,11): warning C4013: 'memset' undefined; assuming extern returning int
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(73,59): warning C4305: '+=': truncation from 'double' to 'float'
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(75,106): error C2440: '=': cannot convert from 'float' to 'float *'
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(76,18): warning C4477: 'printf_s' : format string '%f' requires an argument of type 'double', but variadic argument 1 has type 'float *'
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(84,36): error C2440: 'function': cannot convert from 'float' to 'const char *const '
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(84,33): warning C4024: 'fprintf': different types for formal and actual parameter 2
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(84,43): error C2059: syntax error: 'type'
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(83,20): error C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(92,22): warning C4244: 'function': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(98,17): error C2143: syntax error: missing ';' before ')'
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(98,12): warning C4552: '<': result of expression not used
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(100,33): error C2106: '=': left operand must be l-value
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(103,30): error C2057: expected constant expression
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(103,30): error C2466: cannot allocate an array of constant size 0
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(103,49): error C2296: '%': illegal, left operand has type 'float'
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(106,30): error C2057: expected constant expression
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(106,30): error C2466: cannot allocate an array of constant size 0
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(106,50): error C2296: '%': illegal, left operand has type 'float'
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(110,27): error C2440: 'function': cannot convert from 'float' to 'const char *const '
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(110,24): warning C4024: 'printf_s': different types for formal and actual parameter 1
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(96,1): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(120,1): error C2085: 'main': not in formal parameter list
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(120,1): error C2143: syntax error: missing ';' before '{'
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(122,28): warning C4047: 'function': 'float **' differs in levels of indirection from 'float (*)[4]'
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(122,15): warning C4024: 'parametry': different types for formal and actual parameter 1
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(127,5): error C2146: syntax error: missing ';' before identifier 'generator'
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(127,28): warning C4047: 'function': 'float *' differs in levels of indirection from 'float (*)[4]'
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(127,15): warning C4024: 'generator': different types for formal and actual parameter 1
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(127,40): error C2059: syntax error: ')'
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(128,19): error C2065: 'i': undeclared identifier
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(128,19): error C2057: expected constant expression
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(128,19): error C2466: cannot allocate an array of constant size 0
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(128,20): error C2133: 'wyniki': unknown size
+C:\Users\Szymon\source\repos\2laby\2laby\laby2.c(130,13): warning C4098: 'rozmiartablicywynikowej': 'void' function returning a value
