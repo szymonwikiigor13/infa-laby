@@ -88,6 +88,7 @@ void delete_db(ImageDb* db) {
 		delete_img(db->images[i]);
 	}
 
+	free(db->images);
 	free(db);
 }
 
