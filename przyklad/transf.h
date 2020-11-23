@@ -3,14 +3,14 @@
 
 #include "image.h"
 
-PgmImage* rotate(PgmImage*, int);
+PgmImage* rotate_k90_deg(PgmImage*, int);
 
 int histogram(PgmImage*, int*);
 
 void negative(PgmImage*);
 
-void salt_pepper(PgmImage*);
+void salt_pepper(PgmImage*, int);
 
-PgmImage* gauss(PgmImage*);
+PgmImage* gauss_blur(PgmImage*);
 
 #endif
