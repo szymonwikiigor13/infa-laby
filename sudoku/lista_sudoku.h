@@ -16,6 +16,7 @@ lista_sudoku_ptr lista_sudoku_nowa();
 void lista_sudoku_zwolnij(lista_sudoku_ptr);
 void lista_sudoku_dodaj(lista_sudoku_ptr, sudoku_ptr);
 void lista_sudoku_wypisz(lista_sudoku_ptr);
+sudoku_ptr lista_sudoku_indeks(lista_sudoku_ptr, int);
 
 void wczytaj_sudoku_z_pliku(lista_sudoku_ptr, char*);
 int lista_sudoku_rozmiar(lista_sudoku_ptr);

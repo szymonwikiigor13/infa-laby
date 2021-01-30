@@ -126,4 +126,6 @@ sudoku_ptr lista_sudoku_indeks(lista_sudoku_ptr lista, int indeks) {
 		temp = temp->nastepny;
 		licznik++;
 	}
+
+	return NULL;
 }
