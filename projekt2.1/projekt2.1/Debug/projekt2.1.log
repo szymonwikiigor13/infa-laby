@@ -1,5 +1,0 @@
-﻿  Source.c
-C:\Users\bk\Desktop\infa-laby\projekt2.1\projekt2.1\Source.c(6,1): warning C4005: '_CRT_SECURE_NO_WARNINGS': macro redefinition
-C:\Users\bk\Desktop\infa-laby\projekt2.1\projekt2.1\Source.c : message : see previous definition of '_CRT_SECURE_NO_WARNINGS'
-C:\Users\bk\Desktop\infa-laby\projekt2.1\projekt2.1\Source.c(438,18): warning C4244: 'function': conversion from 'time_t' to 'unsigned int', possible loss of data
-  projekt2.1.vcxproj -> C:\Users\bk\Desktop\infa-laby\projekt2.1\Debug\projekt2.1.exe
