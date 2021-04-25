@@ -8,12 +8,15 @@ class Kasyno
 {
 private:
 	Karta karty[52];
-	Gracz gracze[2];
+	Gracz** gracze;
 	bool zajete[52];
+	int liczba_graczy;
 
 	int losowa_karta() const;
+	void dealokuj(int** wyniki) const;
 	bool wszyscy_pasuja() const;
 	void podsumuj_wyniki() const;
+	void zapisz_plik() const;
 
 public:
 	Kasyno();

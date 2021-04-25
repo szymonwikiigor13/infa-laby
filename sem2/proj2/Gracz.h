@@ -1,4 +1,7 @@
 #pragma once
+#include <string>
+
+using namespace std;
 
 class Karta;
 class Kasyno;
@@ -6,7 +9,7 @@ class Kasyno;
 class Gracz
 {
 private:
-	char nazwa[20] = { 0 };
+	string nazwa;
 	Kasyno* kasyno;
 	Karta* karty[10];
 
@@ -17,12 +20,15 @@ private:
 
 public:
 	Gracz();
-	Gracz(Kasyno* tworca, char* nazwa);
+	Gracz(Kasyno* tworca, string nazwa);
 
-	char* getNazwa() const { return (char*) &nazwa; };
+	string getNazwa() const { return nazwa; };
+	Karta* getKarty() const { return (Karta*) karty; };
 	int getPunkty() const { return punkty; };
 	int getIlosc() const { return ilosc_kart; };
 	bool jest_pas() const { return spasowal; };
+
+	virtual bool ruch();
 
 	bool wezKarte(Karta* _karta);
 	void wyswietl_karty() const;

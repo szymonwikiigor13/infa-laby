@@ -1,16 +1,39 @@
 #include "Kasyno.h"
+#include "Bot.h"
 
 #include <stdlib.h>
+#include <string>
+#include <fstream>
+
+#include <chrono>
+#include <thread>
+
+using namespace std;
 
 int Kasyno::losowa_karta() const
 {
 	return rand() % 52;
 }
 
+void Kasyno::dealokuj(int** wyniki) const
+{
+	for (int i = 0; i < liczba_graczy; i++) {
+		delete[] wyniki[i];
+	}
+
+	delete[] wyniki;
+
+	for (int i = 0; i < liczba_graczy; i++) {
+		delete gracze[i];
+	}
+
+	delete[] gracze;
+}
+
 bool Kasyno::wszyscy_pasuja() const
 {
-	for (int i = 0; i < 2; i++) {
-		if (!gracze[i].jest_pas()) {
+	for (int i = 0; i < liczba_graczy; i++) {
+		if (!gracze[i]->jest_pas()) {
 			return false;
 		}
 	}
@@ -90,12 +113,12 @@ void Kasyno::graj()
 	Gracz* perskie[2] = { nullptr };
 	int ix = 0;
 
-	for (int i = 0; i < 2; i++) { // ROZDANIE
-		gracze[i].wezKarte(this->dajKarte());
-		gracze[i].wezKarte(this->dajKarte());
+	for (int i = 0; i < liczba_graczy; i++) { // ROZDANIE
+		gracze[i]->wezKarte(this->dajKarte());
+		gracze[i]->wezKarte(this->dajKarte());
 
-		if (gracze[i].getPunkty() == 22) {
-			perskie[ix++] = &gracze[i];
+		if (gracze[i]->getPunkty() == 22) {
+			perskie[ix++] = gracze[i];
 		}
 	}
 
@@ -108,25 +131,20 @@ void Kasyno::graj()
 
 	if (perskie[0] != nullptr) {
 		for (int i = 0; i < 2; i++) { // AUTO PAS
-			gracze[i].decyzja(true);
+			gracze[i]->decyzja(true);
 		}
 	}
 
 	while (!this->wszyscy_pasuja()) {
-		for (int i = 0; i < 2; i++) {
-			if (!gracze[i].jest_pas()) {
-				cout << "Tura gracza " << gracze[i].getNazwa() << ":" << endl;
+		for (int i = 0; i < liczba_graczy; i++) {
+			if (!gracze[i]->jest_pas()) {
+				cout << "Tura gracza " << gracze[i]->getNazwa() << ":" << endl;
 				cout << "Aktualne karty:" << endl;
-				gracze[i].wyswietl_karty();
+				gracze[i]->wyswietl_karty();
 
-				char decyzja;
 				cout << "Gracz pasuje? (t/n)" << endl;
-				cin >> decyzja;
 
-				if (decyzja == 't') {
-					gracze[i].decyzja(true);
-				}
-				else {
+				if (gracze[i]->ruch()) {
 					Karta* nowa = this->dajKarte();
 
 					if (nowa == nullptr) {
@@ -134,19 +152,21 @@ void Kasyno::graj()
 						break;
 					}
 
-					if (gracze[i].wezKarte(nowa)) {
+					if (gracze[i]->wezKarte(nowa)) {
 						cout << "Nowe karty gracza:" << endl;
-						gracze[i].wyswietl_karty();
+						gracze[i]->wyswietl_karty();
 
-						if (gracze[i].getPunkty() > 21) {
+						if (gracze[i]->getPunkty() > 21) {
 							cout << "Gracz przegral..." << endl;
-							gracze[i].decyzja(true);
+							gracze[i]->decyzja(true);
 						}
 					}
 					else {
 						cout << "Gracz przegral..." << endl;
-						gracze[i].decyzja(true);
+						gracze[i]->decyzja(true);
 					}
+
+					this_thread::sleep_for(2000ms);
 				}
 			}
 		}
@@ -160,17 +180,18 @@ void Kasyno::podsumuj_wyniki() const
 	//i  0  1  2                   i  0  1  2
 	//p|12|20|18| -> sortowanie -> p|12|18|20|
 	//g| 0| 1| 2|                  g| 0| 2| 1|
-	const int ilosc_graczy = 2;
+	int** wyniki = new int*[liczba_graczy];
+	for (int i = 0; i < liczba_graczy; i++) {
+		wyniki[i] = new int[2];
+	}
 
-	int wyniki[2][2] = { 0 };
-
-	for (int i = 0; i < 2; i++) {
-		wyniki[i][0] = gracze[i].getPunkty();
+	for (int i = 0; i < liczba_graczy; i++) {
+		wyniki[i][0] = gracze[i]->getPunkty();
 		wyniki[i][1] = i;
 	}
 
-	for (int i = 0; i < ilosc_graczy - 1; i++) {
-		for (int j = 0; j < ilosc_graczy - i - 1; j++) {
+	for (int i = 0; i < liczba_graczy - 1; i++) { // bubble sort
+		for (int j = 0; j < liczba_graczy - i - 1; j++) {
 			if (wyniki[j][0] > wyniki[j + 1][0]) {
 				int temp[2];
 
@@ -186,49 +207,171 @@ void Kasyno::podsumuj_wyniki() const
 		}
 	}
 
-	//TODO get punkty
+	if (wyniki[0][0] > 21) {
+		cout << "Wszyscy przegrali..." << endl;
+		this->zapisz_plik();
+		this->dealokuj(wyniki);
+		return;
+	}
 
-	int maks_wynik = -1;
-	bool remis = false;
-	for (int j = ilosc_graczy - 1; j >= 0; j--) {
+	for (int j = liczba_graczy - 1; j >= 0; j--) {
 		int punkty = wyniki[j][0];
 		int gracz = wyniki[j][1];
 
-		if (punkty <= 21 && maks_wynik == -1) {
-			maks_wynik = punkty;
-
+		if (punkty <= 21) { // Pierwszy zwyciezca
 			if (j - 1 >= 0) {
 				int punkty_wcz = wyniki[j - 1][0];
 				int gracz_wcz = wyniki[j - 1][1];
 
-				if (maks_wynik != punkty_wcz) {
-					cout << "Wygrywa " << gracze[gracz].getNazwa() << "!" << endl;
+				if (punkty != punkty_wcz) { // Jeden zwyciezca
+					cout << "Wygrywa " << gracze[gracz]->getNazwa() << "!" << endl;
+					this->zapisz_plik();
+					this->dealokuj(wyniki);
 					return;
 				}
-				else {
-					cout << "Remisuj¹: ";
+				else { // Remisy
+					cout << "Remisuja: " << endl;
+					cout << gracze[gracz]->getNazwa() << endl;
+
+					while (j - 1 >= 0) {
+						int punkty_wcz = wyniki[j - 1][0];
+						int gracz_wcz = wyniki[j - 1][1];
+
+						if (punkty_wcz == punkty) {
+							cout << gracze[gracz_wcz]->getNazwa();
+							j--;
+						}
+						else {
+							this->zapisz_plik();
+							this->dealokuj(wyniki);
+							return;
+						}
+					}
 				}
 			}
-
-			cout << "Wygrywa " << gracze[gracz].getNazwa() << endl;
+			else {
+				cout << "Wygrywa " << gracze[gracz]->getNazwa() << "!" << endl;
+				this->zapisz_plik();
+				this->dealokuj(wyniki);
+				return;
+			}
 		}
-		else if (punkty == maks_wynik) {
-			cout << "Wygrywa " << gracze[gracz].getNazwa() << endl;
-			remis = true;
+	}
+}
+
+void Kasyno::zapisz_plik() const
+{
+	ofstream plik("wyniki.txt");
+
+	//TODO FORMATOWANIE PLIKU Z WYNIKAMI
+
+	if (plik.is_open()) {
+		for (int i = 0; i < liczba_graczy; i++) {
+			plik << gracze[i]->getNazwa() << " ";
+
+			for (int j = 0; j < gracze[i]->getIlosc(); j++) {
+
+				char fig = gracze[i]->getKarty()[j].getFigura();
+				char kol = gracze[i]->getKarty()[j].getKolor();
+
+				plik << fig << kol << " ";
+			}
+
+			plik << gracze[i]->getPunkty() << endl;
 		}
 
+		plik.close();
+	}
+	else {
+		cout << "Nie mozna otworzyc pliku do zapisu." << endl;
 	}
 }
 
 void Kasyno::nowa_gra()
 {
-	char bufor[20];
+	int ilosc_graczy, ilosc_botow;
 
-	for (int i = 0; i < 2; i++) {
+	cout << "Prosze podac liczbe graczy (maks. 3): " << endl;
+	while (true) {
+		cin >> ilosc_graczy;
+
+		if (ilosc_graczy > 3 || ilosc_graczy < 0) {
+			cout << "Niepoprawna ilosc graczy." << endl;
+			continue;
+		}
+
+		if (cin.fail() == true) {
+			cout << "Wykryto blad!" << endl;
+			cin.clear();
+			cin.ignore(256, '\n');
+		}
+		else break;
+	}
+
+	cout << "Prosze podac liczbe botow (maks. 3): " << endl;
+	while (true) {
+		cin >> ilosc_botow;
+
+		if (ilosc_botow > 3 || ilosc_botow < 0) {
+			cout << "Niepoprawna ilosc botow." << endl;
+			continue;
+		}
+
+		if (cin.fail() == true) {
+			cout << "Wykryto blad!" << endl;
+			cin.clear();
+			cin.ignore(256, '\n');
+		}
+		else break;
+	}
+
+	liczba_graczy = ilosc_graczy + ilosc_botow;
+
+	gracze = new Gracz*[liczba_graczy];
+
+	for (int i = 0; i < ilosc_graczy; i++) {
+		string bufor;
+
 		cout << "Prosze podac nazwe gracza " << i + 1 << ":" << endl;
-		cin >> bufor;
+		while (true) {
+			cin >> bufor;
+			if (cin.fail() == true) {
+				cout << "Wykryto blad!" << endl;
+				cin.clear();
+				cin.ignore(256, '\n');
+			}
+			else break;
+		}
 
-		gracze[i] = Gracz(this, bufor);
+		if (bufor.size() > 20) {
+			i--;
+			cout << "Wprowadzono zbyt dluga nazwe..." << endl;
+			continue;
+		}
+
+		gracze[i] = new Gracz(this, bufor);
+	}
+
+	
+	for (int i = ilosc_graczy; i < liczba_graczy; i++) {
+		int odwaga = rand() % 3 + 1;
+		int numer = i - ilosc_graczy + 1;
+		string imie;
+
+		switch (odwaga)
+		{
+		case 1:
+			imie = "AgressiveDummy" + to_string(numer);
+			break;
+		case 2:
+			imie = "CasualDummy" + to_string(numer);
+			break;
+		case 3:
+			imie = "ClumsyDummy" + to_string(numer);
+			break;
+		}
+
+		gracze[i] = new Bot(this, imie, odwaga);
 	}
 
 	for (int i = 0; i < 52; i++) {

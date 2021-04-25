@@ -10,9 +10,30 @@ Gracz::Gracz() : punkty(0), ilosc_kart(0), kasyno(nullptr), spasowal(false)
 {
 }
 
-Gracz::Gracz(Kasyno* tworca, char* _nazwa) : punkty(0), ilosc_kart(0), kasyno(tworca), spasowal(false)
+Gracz::Gracz(Kasyno* tworca, string _nazwa) : punkty(0), ilosc_kart(0), kasyno(tworca), spasowal(false), nazwa(_nazwa)
 {
-	strncpy_s(nazwa, _nazwa, 20);
+}
+
+bool Gracz::ruch()
+{
+	string decyzja;
+
+	while (true) {
+		cin >> decyzja;
+		if (cin.fail() == true) {
+			cout << "Wykryto blad!" << endl;
+			cin.clear();
+			cin.ignore(256, '\n');
+		}
+		else break;
+	}
+
+	if (decyzja[0] == 't') {
+		this->decyzja(true);
+		return false;
+	}
+
+	return true;
 }
 
 bool Gracz::wezKarte(Karta* _karta)
