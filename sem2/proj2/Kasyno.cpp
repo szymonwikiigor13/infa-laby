@@ -180,7 +180,7 @@ void Kasyno::podsumuj_wyniki() const
 	//i  0  1  2                   i  0  1  2
 	//p|12|20|18| -> sortowanie -> p|12|18|20|
 	//g| 0| 1| 2|                  g| 0| 2| 1|
-	int** wyniki = new int*[liczba_graczy];
+	int** wyniki = new int* [liczba_graczy];
 	for (int i = 0; i < liczba_graczy; i++) {
 		wyniki[i] = new int[2];
 	}
@@ -271,10 +271,7 @@ void Kasyno::zapisz_plik() const
 
 			for (int j = 0; j < gracze[i]->getIlosc(); j++) {
 
-				char fig = gracze[i]->getKarty()[j].getFigura();
-				char kol = gracze[i]->getKarty()[j].getKolor();
-
-				plik << fig << kol << " ";
+				plik << gracze[i]->getKarty()[j].getFigura() << gracze[i]->getKarty()[j].getKolor() << " ";
 			}
 
 			plik << gracze[i]->getPunkty() << endl;
@@ -327,7 +324,7 @@ void Kasyno::nowa_gra()
 
 	liczba_graczy = ilosc_graczy + ilosc_botow;
 
-	gracze = new Gracz*[liczba_graczy];
+	gracze = new Gracz * [liczba_graczy];
 
 	for (int i = 0; i < ilosc_graczy; i++) {
 		string bufor;
@@ -352,7 +349,7 @@ void Kasyno::nowa_gra()
 		gracze[i] = new Gracz(this, bufor);
 	}
 
-	
+
 	for (int i = ilosc_graczy; i < liczba_graczy; i++) {
 		int odwaga = rand() % 3 + 1;
 		int numer = i - ilosc_graczy + 1;
