@@ -8,7 +8,13 @@ using namespace std;
 
 void Symulacja::iteracja(float czas)
 {
-	regulator->steruj(czas);
+	if (!grzejnik || !pomieszczenie) {
+		throw exception("Symulacja nie ma przypisanego pomieszczenia lub grzejnika");
+	}
+
+	if (regulator) {
+		regulator->steruj(czas);
+	}
 
 	float cieploGrzejnika = grzejnik->obliczEmitowaneCieplo();
 	pomieszczenie->dodajCieplo(cieploGrzejnika);
@@ -43,7 +49,7 @@ void Symulacja::zapis(string nazwaPliku)
 		plik.close();
 	}
 	else {
-		throw "Nie mozna otworzyc pliku do zapisu";
+		throw exception("Nie mozna otworzyc pliku do zapisu");
 	}
 
 	przebiegi.clear();

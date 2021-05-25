@@ -1,7 +1,19 @@
+#include <exception>
+
 #include "RegulatorPID.h"
+
+using namespace std;
 
 void RegulatorPID::steruj(float czas)
 {
+	if (!this->podajPomieszczenie() || !this->podajGrzejnik()) {
+		throw exception("Nie skonfigurowano powiazan");
+	}
+
+	if (kp == 0 && ki == 0 && kd == 0) {
+		throw exception("Nastaw regulatora PID jest niepoprawny");
+	}
+
 	float zmierzona = this->podajPomieszczenie()->getTemperatura();
 
 	float e = (this->podajZadanaTemperature() - zmierzona);
